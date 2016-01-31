@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html >
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="">
+	<style type="text/css" media="screen">
+		#mapSurface{
+width: 600px;
+    height: 400px;
+    border: solid 1px black;			
+		}
+	</style>
+</head>
+<script type="text/javascript">
+// if(navigator.geolocation) {
+//     alert("Geolocation API поддерживается");
+// } else {
+//     alert("Geolocation API не поддерживается в вашем браузере");
+// }
+
+var geoCtrl=function (){
+        alert("I is WORK");
+
+    }
+    // geoCtrl();
+// </script>
+
+<script src='http://maps.googleapis.com/maps/api/js?key='+__API-Key__+'&sensor=true'></script>
+
+<script>
+
+    function initialize()
+    {
+        var laa=-34.397;
+        var lonn= 150.644;
+        var mapOptions =
+        {
+            zoom: 7,
+            center: new google.maps.LatLng(laa, lonn),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            maxZoom: 8,
+            minZoom:2
+        };
+
+        var map = new google.maps.Map(document.getElementById('location-canvas'),
+            mapOptions);
+
+      
+
+
+        var marker = new google.maps.Marker({
+            map: map,
+            draggable: false,
+            position: new google.maps.LatLng(laa, lonn)
+        });
+
+        function bind(eventName)
+        {
+            google.maps.event.addListener(map, eventName, function ()
+            {
+                common();
+
+            });
+        }
+
+        bind('zoom_changed');
+        bind('center_changed');
+        bind('tilesloaded');
+        bind('idle');
+
+        function common()
+        {
+            var bounds = map.getBounds();
+            var southWest = bounds.getSouthWest();
+            var northEast = bounds.getNorthEast();
+            var getcentre=bounds.getCenter();
+            var ne = map.getBounds().getNorthEast();
+            var sw = map.getBounds().getSouthWest();
+            var zoom=map.getZoom();
+            var centre_lat=getcentre.lat();
+            var centre_long=getcentre.lng();
+            var myLatlng=new google.maps.LatLng(centre_lat,centre_long);
+            var mapProp =
+            {
+                center: new google.maps.LatLng(centre_lat,centre_long),
+                zoom:zoom,
+                maxZoom: 8,
+                minZoom:2,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+        }
+         navigator.geolocation.getCurrentPosition(function(position) {
+            var lat =position.coords.latitude ;
+            var longi = position.coords.longitude;
+             var mapOptions1 =
+        {
+            zoom: 15,
+            center: new google.maps.LatLng(lat, longi),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            maxZoom: 30,
+            minZoom:2
+        };
+			// alert(lat+','+longi);
+			// console.log(lat+','+longi);
+			var divMap=document.getElementById('location-canvas');
+      var map = new google.maps.Map(document.getElementById('location-canvas'),mapOptions1);
+        var marker = new google.maps.Marker({
+            map: map,
+            draggable: false,
+            position: new google.maps.LatLng(lat, longi)
+        });
+      // var objmarker={
+      // 	position:mapOptions1,
+      // 	map:map 
+      // };
+      // var marker=new google.maps.Marker(objmarker);
+    })
+    }
+
+    google.maps.event.addDomListener(window, 'resize', initialize);
+    google.maps.event.addDomListener(window, 'load', initialize);
+    alert('Map Script');
+    initialize();
+    common();
+</script>
+
+       
+
+<body>
+	
+   <title>Геолокация</title>
+ <div ng-controller="geoCtrl">
+   	 <!-- <div id='location-canvas' style='width:100%;height:500px;'> -->
+
+	   <div id='location-canvas' style='width:400px;height:300px;'>
+
+    <input ng-model="name">
+    <div>
+        <!-- <p>{{name}}</p> -->
+    </div>
+        </div>
+</div>
+
+
+</body>
+<footer>
+    Map Here!!
+</footer>
+</html>
